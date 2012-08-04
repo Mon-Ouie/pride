@@ -16,7 +16,7 @@ module Pride
         mod.constants(false).each do |const|
           begin
             val = mod.const_get(const)
-          rescue NameError # some odd edge cases it seems.e
+          rescue NameError, LoadError # for autoload
             next
           end
 
