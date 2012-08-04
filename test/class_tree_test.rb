@@ -64,4 +64,23 @@ context "a class tree" do
       end
     end
   end
+
+  context "with a constant that uses autoload" do
+    hookup do
+      Object.autoload :PP,  "pp"
+      topic.reload
+    end
+
+    asserts "got the new class" do
+      tree_has_item? "PP"
+    end
+
+    context "and can't be loaded" do
+      hookup do
+        Object.autoload :FooBar, "this_file_must_seriously_not_exist"
+      end
+
+      denies(:reload).raises_kind_of Exception
+    end
+  end
 end
